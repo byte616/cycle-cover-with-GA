@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     auto pr = con->construct();
 
 	if (result) {
-		std::cout << "problem: \n" << *pr.first << '\n';
+		// std::cout << "problem: \n" << *pr.first << '\n';
 		std::cout << "solution: \n" << pr.second << '\n';
 
 		MinMaxProblem ins((*pr.first)(), (*pr.first).get_k());

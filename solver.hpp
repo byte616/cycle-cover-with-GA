@@ -355,6 +355,7 @@ public:
             else {
                 auto split = tour_visit ;
                 auto residual_cost = tour_cost ;
+                double avg = 0.0;
                 while ( residual_cost-ins.get_B() > 1e-5 ) {
                     if (demo) std::cout << "Tour cost exceed limit : " << residual_cost << "\n" ;
                     split.pop_back() ;
@@ -397,15 +398,25 @@ public:
                     split.push_back(split[0]) ;
                     Ci.push_back(newPath) ;
 
+                    double sum = 0;
+                    for(size_t i = 0; i < newPath.size() - 1; i++){
+                        sum += ins.copy()(newPath[i], newPath[i + 1]);
+                    }    
+                    sum += ins.copy()(newPath[0], newPath.back());
+                    avg += sum;
+                    cout << "TOUR COST: " << sum << '\n';
+
                     if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
                 }
 
                 if ( residual_cost != 0 or split.size() != 0 ) {
                     residual_cost += ins.copy()(split[0],split.back()) ; 
                     Ci.push_back(split) ;
-
+                    avg += residual_cost;
+                    cout << "TOUR COST: " << residual_cost << '\n';
                     if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
                 }
+                cout << "AVG = " << avg / Ci.size() << '\n';
             }
 
         
