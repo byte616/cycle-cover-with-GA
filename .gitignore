@@ -47,3 +47,12 @@
 
 cycle_cover
 data/*
+
+answer
+testcase
+stdout
+stderr
+prim 
+record1
+record2
+sum_n

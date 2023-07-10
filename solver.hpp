@@ -191,7 +191,8 @@ public:
 
         solution Ci ;
         
-
+        std::cerr << ins.get_B() << '\n';
+        std::cerr << ins.copy() << '\n';
         // construct a graph from G_prime by removing the large edges
         problem::graph_t graph = ins.copy() ; 
         for ( size_t i = 0 ; i < graph.size(); i++ ) {
@@ -202,7 +203,7 @@ public:
             }
         }
 
-        if (demo) std::cout << graph ;
+        // if (demo) std::cerr << graph ;
 
         // find MSTs of each connected component 
         if (demo) std::cout << "\n----------Step1 : Find MSTs for each connected components ----------\n\n" ;
@@ -416,7 +417,8 @@ public:
                     cout << "TOUR COST: " << residual_cost << '\n';
                     if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
                 }
-                cout << "AVG = " << avg / Ci.size() << '\n';
+                cout << "AVG: " << avg / Ci.size() << '\n';
+                cout << "ANS: " << Ci.size() << '\n';
             }
 
         
