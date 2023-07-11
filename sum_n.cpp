@@ -25,7 +25,7 @@ int main(){
     }
     
     double x11, x12, x13, x14, x15;
-    double sum6 = 0, sum7 = 0, sum8 = 0, sum9 = 0, sum10 = 0;
+    double sum11 = 0, sum12 = 0, sum13 = 0, sum14 = 0, sum15 = 0;
     for(int i = 0; i < N; i++){
         cin >> str >> x11; sum11 += x11;
         cin >> str >> x12; sum12 += x12;
