@@ -30,5 +30,5 @@ cat answer | grep "ANS" > record2
 cat stdout | grep "ANS" >> record2
 cat stdout2 | grep "ANS" >> record2
 g++ sum_b.cpp -o sum_b
-./sum_n < record2 > nodes_uavs.ans
-./sum_n < record1 > nodes_uavs_tour.ans
+./sum_b < record2 > nodes_uavs.ans
+./sum_b < record1 > nodes_uavs_tour.ans
