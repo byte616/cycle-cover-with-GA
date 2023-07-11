@@ -5,7 +5,7 @@ g++ MST.cpp -o MST
 touch answer stdout stderr stdout2 stderr2
 rm answer stdout stderr stdout2 stderr2
 touch answer stdout stderr stdout2 stderr2
-for i in {1..2}
+for i in {1..50}
 do
     ./cycle_cover --constructor="name=min-deploy B=1800 n=100 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
     ./prim < testcase >> stdout 2>> stderr

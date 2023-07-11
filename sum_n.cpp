@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
     string str;
-    int N = 2;
+    int N = 50;
     double x1, x2, x3, x4, x5;
     double sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0;
     for(int i = 0; i < N; i++){
