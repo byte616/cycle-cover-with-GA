@@ -441,9 +441,84 @@ public:
                 }
                 cout << "AVG: " << avg / Ci.size() << '\n';
                 cout << "ANS: " << Ci.size() << '\n';
+                // ============= B / 2 ================
+                {
+                    auto split = tour_visit ;
+                    auto residual_cost = tour_cost ;
+                    solution Ci ;
+                    double avg = 0;
+                    while ( residual_cost > ins.get_B() ) {
+                        if (demo) std::cout << "Tour cost exceed limit : " << residual_cost << "\n" ;
+
+                        split.pop_back() ;
+                        float newPath_cost = 0 ;
+                        std::vector<unsigned> newPath; 
+                        newPath.push_back(split[0]) ;
+                
+                        size_t l = split.size()-1, r = 1 ;
+                        while ( 1 ) {
+                            
+                            float min_edge = std::min(ins.copy()(split[l],split[l+1]),ins.copy()(split[r],split[r-1]) )  ;
+                            if ( ins.get_B()/2 <= newPath_cost+min_edge ) {
+                                break ;
+                            }
+
+                            newPath_cost += std::min(ins.copy()(split[l],split[l+1]),ins.copy()(split[r],split[r-1]) ) ;
+                            if ( ins.copy()(split[l],split[l+1]) <= ins.copy()(split[r],split[r-1]) ) {
+                                newPath.insert(newPath.begin(), split[l]) ;
+                                l-- ;
+                            }
+                            else {
+                                newPath.push_back(split[r]) ;
+                                r++ ;
+                            }
+                        }
+                    
+                        newPath.push_back(newPath[0]) ;
+                        if (demo) std::cout << "sub-path cost " << newPath_cost << "\n" ;
+                        if (demo) std::cout << "The number of node in the tour sub-path " << newPath.size()-1 << "\n" ;
+                
+                        newPath_cost += ins.copy()(split[r-1],split[l+1]) ;
+                        if ( l == split.size()-1 ) {
+                            split = std::vector<unsigned>(split.begin()+r,split.end()) ;
+                        }
+                        else {
+                            split = std::vector<unsigned>(split.begin()+r,split.begin()+l+1) ;
+                        }
+
+                        if (demo) std::cout << "The number of node in the residual_tour " << split.size()-1 << "\n" ;
+
+                        residual_cost = 0 ;
+                        for ( size_t j = 0 ; j < split.size()-1 ; j++ ) {
+                            residual_cost += ins.copy()(split[j],split[j+1]) ;
+                        }
+                        residual_cost += ins.copy()(split[0],split.back()) ;
+
+                        split.push_back(split[0]) ;
+                        Ci.push_back(newPath) ;
+                        double sum = 0;
+                        for(size_t i = 0; i < newPath.size() - 1; i++){
+                            sum += ins.copy()(newPath[i], newPath[i + 1]);
+                        }    
+                        sum += ins.copy()(newPath[0], newPath.back());
+                        avg += sum;
+                        cout << "TOUR COST: " << sum << '\n';
+
+                        if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
+                    }
+
+                    if ( residual_cost != 0 or split.size() != 0 ) {
+                        residual_cost += ins.copy()(split[0],split.back()) ; 
+                        Ci.push_back(split) ;
+                        avg += residual_cost;
+                        cout << "TOUR COST: " << residual_cost << '\n';
+                        if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
+                    }
+                    cout << "AVG2: " << avg / Ci.size() << '\n';
+                    cout << "ANS2: " << Ci.size() << '\n';
+                }
             }
 
-        
         }
 
         if (demo) std::cout << "\n----------Step4 : Obtain tour from EC and tour division  -----------\n" ; 
