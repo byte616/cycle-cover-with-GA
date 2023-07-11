@@ -23,10 +23,21 @@ int main(){
         cin >> str >> x9; sum9 += x9;
         cin >> str >> x10; sum10 += x10;
     }
+    
+    double x11, x12, x13, x14, x15;
+    double sum6 = 0, sum7 = 0, sum8 = 0, sum9 = 0, sum10 = 0;
+    for(int i = 0; i < N; i++){
+        cin >> str >> x11; sum11 += x11;
+        cin >> str >> x12; sum12 += x12;
+        cin >> str >> x13; sum13 += x13;
+        cin >> str >> x14; sum14 += x14;
+        cin >> str >> x15; sum15 += x15;
+    }
+
     cout << fixed << setprecision(6);
-    cout << 100 << " " << sum1 / N << " " << sum6 / N << " " << '\n';
-    cout << 200 << " " << sum2 / N << " " << sum7 / N << " " << '\n';
-    cout << 300 << " " << sum3 / N << " " << sum8 / N << " " << '\n';
-    cout << 400 << " " << sum4 / N << " " << sum9 / N << " " << '\n';
-    cout << 500 << " " << sum5 / N << " " << sum10 / N << " " << '\n';
+    cout << 100 << " " << sum1 / N << " " << sum6 / N << " " << sum11 / N << " " << '\n';
+    cout << 200 << " " << sum2 / N << " " << sum7 / N << " " << sum12 / N << " " << '\n';
+    cout << 300 << " " << sum3 / N << " " << sum8 / N << " " << sum13 / N << " " << '\n';
+    cout << 400 << " " << sum4 / N << " " << sum9 / N << " " << sum14 / N << " " << '\n';
+    cout << 500 << " " << sum5 / N << " " << sum10 / N << " " << sum15 / N << " " << '\n';
 }

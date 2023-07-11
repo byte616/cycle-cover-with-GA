@@ -50,8 +50,8 @@ data/*
 
 answer
 testcase
-stdout
-stderr
+stdout*
+stderr*
 prim 
 record1
 record2
