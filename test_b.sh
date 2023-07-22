@@ -7,19 +7,19 @@ rm answer stdout stderr stdout2 stderr2
 touch answer stdout stderr stdout2 stderr2
 for i in {1..50}
 do
-    ./cycle_cover --constructor="name=min-deploy B=1800 n=100 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
-    ./prim < testcase >> stdout 2>> stderr
-    ./MST < testcase >> stdout2 2>> stderr2
-    ./cycle_cover --constructor="name=min-deploy B=1800 n=200 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
+    ./cycle_cover --constructor="name=min-deploy B=1200 n=300 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
     ./prim < testcase >> stdout 2>> stderr
     ./MST < testcase >> stdout2 2>> stderr2
     ./cycle_cover --constructor="name=min-deploy B=1800 n=300 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
     ./prim < testcase >> stdout 2>> stderr
     ./MST < testcase >> stdout2 2>> stderr2
-    ./cycle_cover --constructor="name=min-deploy B=1800 n=400 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
+    ./cycle_cover --constructor="name=min-deploy B=2400 n=300 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
     ./prim < testcase >> stdout 2>> stderr
     ./MST < testcase >> stdout2 2>> stderr2
-    ./cycle_cover --constructor="name=min-deploy B=1800 n=500 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
+    ./cycle_cover --constructor="name=min-deploy B=3000 n=300 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
+    ./prim < testcase >> stdout 2>> stderr
+    ./MST < testcase >> stdout2 2>> stderr2
+    ./cycle_cover --constructor="name=min-deploy B=3600 n=300 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
     ./prim < testcase >> stdout 2>> stderr
     ./MST < testcase >> stdout2 2>> stderr2
 done
