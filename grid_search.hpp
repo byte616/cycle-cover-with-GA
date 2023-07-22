@@ -34,7 +34,7 @@ protected:
         std::vector<std::shared_ptr<problem>> inss(ins_size);
         for (unsigned i = 0; i < ins_size; ++i) {
             unsigned n = (ins_size < 2)? 100 : 100 + i * (500 - 100) / (ins_size - 1);
-            inss[i] = ProblemFactory::produce(pname, generate(n), k);
+            inss[i] = ProblemFactory::produce(pname, generate(n, VOID, VOID_NUM), k);
         }
         std::deque<std::thread> thrs;
         auto args = solver_args();

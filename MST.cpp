@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 const int N = 505;
-int n, par[N];
+int n, par[N], cnt[N];
 double dis[N][N], B;
 struct Edge{
     double w;
@@ -59,12 +59,24 @@ int main(){
         }
     }
     int cycle = 0;
+    int max_IoT = 0;
+    int min_IoT = 1e9;
+    double avg_IoT = 0;
     for(int i = 0; i < n; i++){
         // cout << i << " " << par[i] << '\n';
         if(par[i] == i){
             cycle++;
         }
+        cnt[par[i]] += 1;
+        max_IoT = max(max_IoT, cnt[par[i]]);
+    }
+    for(int i = 0; i < n; i++){
+        if(cnt[i])
+            min_IoT = min(min_IoT, cnt[par[i]]);
     }
     cout << "ANS: " << cycle << '\n';
     cout << "AVG: " << sum / cycle << '\n';
+    cout << "MAX_IOT: " << max_IoT << '\n';
+    cout << "MIN_IOT: " << min_IoT << '\n';
+    cout << "AVG_IOT: " << (double) n / cycle << '\n';
 }

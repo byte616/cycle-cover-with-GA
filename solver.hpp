@@ -447,6 +447,9 @@ public:
                     auto residual_cost = tour_cost ;
                     solution Ci ;
                     double avg = 0;
+                    int max_IoT = 0;
+                    int min_IoT = 1000;
+                    double avg_IoT = 0;
                     while ( residual_cost > ins.get_B() ) {
                         if (demo) std::cout << "Tour cost exceed limit : " << residual_cost << "\n" ;
 
@@ -500,6 +503,9 @@ public:
                         for(size_t i = 0; i < newPath.size() - 1; i++){
                             sum += ins.copy()(newPath[i], newPath[i + 1]);
                         }    
+                        max_IoT = max(max_IoT, (int)newPath.size());
+                        min_IoT = min(min_IoT, (int)newPath.size());
+                        avg_IoT += newPath.size();
                         sum += ins.copy()(newPath[0], newPath.back());
                         avg += sum;
                         cout << "TOUR COST: " << sum << '\n';
@@ -511,11 +517,18 @@ public:
                         residual_cost += ins.copy()(split[0],split.back()) ; 
                         Ci.push_back(split) ;
                         avg += residual_cost;
+                        max_IoT = max(max_IoT, (int)split.size());
+                        min_IoT = min(min_IoT, (int)split.size());
+                        avg_IoT += split.size();
                         cout << "TOUR COST: " << residual_cost << '\n';
                         if (demo) std::cout << "Add new tour to Ci , size = " << Ci.back().size() << "\n" ; 
                     }
                     cout << "AVG2: " << avg / Ci.size() << '\n';
                     cout << "ANS2: " << Ci.size() << '\n';
+                    cout << "MAX_IOT: " << max_IoT << '\n';
+                    cout << "MIN_IOT: " << min_IoT << '\n';
+                    cout << "AVG_IOT: " << (double) graph.size() / Ci.size() << '\n';
+
                 }
             }
 

@@ -17,11 +17,13 @@ public:
 
 class DummyConstructor : public constructor {
 public:
-    DummyConstructor(const std::string& args = ""): constructor("name=dummy " + args), solv(SolverFactory::produce(property("solver"))), T(100), n(10), k(3),B(0) {
+    DummyConstructor(const std::string& args = ""): constructor("name=dummy " + args), solv(SolverFactory::produce(property("solver"))), T(100), n(10), k(3),B(0), VOID(1000), VOID_NUM(1) {
         if (meta.find("T") != meta.end()) T = static_cast<unsigned>(meta["T"]);
         if (meta.find("n") != meta.end()) n = static_cast<unsigned>(meta["n"]);
         if (meta.find("k") != meta.end()) k = static_cast<unsigned>(meta["k"]);
         if (meta.find("B") != meta.end()) B = static_cast<float>(meta["B"]);
+        if (meta.find("VOID") != meta.end()) VOID = static_cast<unsigned>(meta["VOID"]);
+        if (meta.find("VOID_NUM") != meta.end()) VOID = static_cast<unsigned>(meta["VOID_NUM"]);
         if (meta.find("seed") != meta.end()) gen.seed(static_cast<unsigned int>(meta["seed"]));
         else gen.seed(std::random_device()());
 
@@ -32,11 +34,11 @@ public:
         unsigned t = T - 1;
 
         // MinSumProblem best_p(generate(n), k);
-        auto best_p = ProblemFactory::produce(property("problem"), generate(n), k, B);
+        auto best_p = ProblemFactory::produce(property("problem"), generate(n, VOID, VOID_NUM), k, B);
         solution best_s = solv->solve(*best_p);
         problem::obj_t mx = best_p->objective(best_s);
         while (t--) {
-            auto pro = ProblemFactory::produce(property("problem"), generate(n), k,B);
+            auto pro = ProblemFactory::produce(property("problem"), generate(n, VOID, VOID_NUM), k,B);
             solution sol = solv->solve(*pro);
             problem::obj_t nmx = pro->objective(sol);
             if (nmx > mx) best_p = pro, best_s = sol, mx = nmx;
@@ -45,7 +47,7 @@ public:
     }
 
 protected:
-    virtual problem::graph_t generate(unsigned n) {
+    virtual problem::graph_t generate(unsigned n, unsigned VOID, unsigned VOID_NUM) {
         problem::graph_t g(n);
         std::uniform_real_distribution<problem::obj_t> dis(1, 10);
         for (unsigned i = 0; i < n; ++i) {
@@ -67,6 +69,8 @@ protected:
     unsigned T;
     unsigned n, k; // # of nodes and # of cycles
     float B ;
+    unsigned VOID;
+    unsigned VOID_NUM;
 };
 
 class EvolutionStrategy : public DummyConstructor {
@@ -362,10 +366,34 @@ protected:
         std::vector<Pos> pos;
         std::vector<Dat> data;
         std::uniform_real_distribution<problem::obj_t> dis_pos(pos_lb, pos_ub), dis_data(data_lb, data_ub);
-        for (unsigned i = 0; i < n; ++i) {
-            pos.push_back({dis_pos(gen), dis_pos(gen)});
-            data.push_back(dis_data(gen));
+        // set VOID area
+        unsigned counter = 0, cnt = 1;
+        vector<pair<unsigned,unsigned>> circle;
+        circle.push_back({2500, 2500});
+        while(cnt < VOID_NUM){
+            unsigned x = dis_pos(gen), y = dis_pos(gen);
+            if(x > 4000 || x < 1000 || y > 4000 || y < 1000)
+                continue;
+            circle.push_back({x, y});
+            cnt += 1;
         }
+        while(counter < n){
+            unsigned x = dis_pos(gen), y = dis_pos(gen);
+            bool flag = 0;
+            for(auto coord : circle){
+                if((x - coord.first) * (x - coord.first) + (y - coord.second) * (y - coord.second) <= VOID * VOID)
+                    flag = 1;
+            }
+            if(flag) continue;
+            pos.push_back({x, y});
+            data.push_back(dis_data(gen));
+            counter += 1;
+        }
+        
+        // for (unsigned i = 0; i < n; ++i) {
+        //     pos.push_back({dis_pos(gen), dis_pos(gen)});
+        //     data.push_back(dis_data(gen));
+        // }./cycle_cover --constructor="name=min-deploy B=1800 n=300 VOID=2500 problem=mccp solver='name=mccp demo=1'" --result >> answer 2> testcase
         return {pos, data};
     }
 
@@ -404,7 +432,7 @@ public:
     }
 
 protected:
-    virtual problem::graph_t generate(unsigned n) override {
+    virtual problem::graph_t generate(unsigned n, unsigned VOID, unsigned VOID_NUM) override {
         // if (meta.find("n") == meta.end()) n = std::uniform_int_distribution<unsigned>(100, 500)(gen);
         std::vector<std::pair<problem::obj_t, problem::obj_t>> pos;
         std::vector<problem::obj_t> data;
@@ -412,10 +440,33 @@ protected:
         problem::obj_t fly_speed = 10.f;
 
         std::uniform_real_distribution<problem::obj_t> dis_pos(0, 5000), dis_data(5, 10);
-        for (unsigned i = 0; i < n; ++i) {
-            pos.push_back({dis_pos(gen), dis_pos(gen)});
-            data.push_back(dis_data(gen));
+        // set VOID area
+        unsigned counter = 0, cnt = 1;
+        vector<pair<unsigned,unsigned>> circle;
+        circle.push_back({2500, 2500});
+        while(cnt < VOID_NUM){
+            unsigned x = dis_pos(gen), y = dis_pos(gen);
+            if(x > 4000 || x < 1000 || y > 4000 || y < 1000)
+                continue;
+            circle.push_back({x, y});
+            cnt += 1;
         }
+        while(counter < n){
+            unsigned x = dis_pos(gen), y = dis_pos(gen);
+            bool flag = 0;
+            for(auto coord : circle){
+                if((x - coord.first) * (x - coord.first) + (y - coord.second) * (y - coord.second) <= VOID * VOID)
+                    flag = 1;
+            }
+            if(flag) continue;
+            pos.push_back({x, y});
+            data.push_back(dis_data(gen));
+            counter += 1;
+        }
+        // for (unsigned i = 0; i < n; ++i) {
+        //     pos.push_back({dis_pos(gen), dis_pos(gen)});
+        //     data.push_back(dis_data(gen));
+        // }
 
         problem::graph_t g(n);
         for (unsigned i = 0; i < n; ++i) {

@@ -134,10 +134,16 @@ int main(){
         }
     }
     double total = 0;
+    int max_IoT = 0;
+    int min_IoT = 1e9;
+    double avg_IoT = 0;
     // cout << "ANS: " << ans_size << '\n';
     for(int i = 0; i < ans_size; i++){
         cerr << "PATH #" << i << ": " << '\n';
         double sum = 0;
+        max_IoT = max(max_IoT, (int)ans[i].size());
+        min_IoT = min(min_IoT, (int)ans[i].size());
+        avg_IoT += ans[i].size();
         for(int j = 0; j < ans[i].size(); j++){
             cerr << ans[i][j] << " ";
             if(j != 0){
@@ -154,4 +160,7 @@ int main(){
     }
     cout << "ANS: " << ans_size << '\n';
     cout << "AVG: " << total / ans_size << '\n';
+    cout << "MAX_IOT: " << max_IoT << '\n';
+    cout << "MIN_IOT: " << min_IoT << '\n';
+    cout << "AVG_IOT: " << (double) n / ans_size << '\n';
 }
